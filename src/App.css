@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.Booklist {
+  width: 90vw;
+  margin: 5rem auto;
+  display: grid;
+  max-width: 1120px;
+}
+
+img {
+  width: 400px;
+}
