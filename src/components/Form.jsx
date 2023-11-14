@@ -5,17 +5,21 @@ import * as yup from "yup";
 
 export const Form = () => {
   const schema = yup.object().shape({
-    fullname: yup.string().required(),
-    email: yup.string().email().required(),
-    age: yup.number().positive(),
+    fullname: yup.string().required("FullName is required!!!"),
+    email: yup.string().email("Include @gmail.com").required(),
+    age: yup.number("Must be a number!").positive("Cannot be negative!"),
     password: yup.string().required().min(4).max(12),
     confirmpassword: yup
       .string()
-      .oneOf([yup.ref("password"), null])
+      .oneOf([yup.ref("password"), null], "passwords Do not match")
       .required(),
   });
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -40,6 +44,7 @@ export const Form = () => {
             id="fname"
             {...register("fullname")}
           />
+          <p>{errors.fullname?.message}</p>
         </div>
         <div>
           <label htmlFor="email">Email</label>
@@ -49,10 +54,12 @@ export const Form = () => {
             id="email"
             {...register("email")}
           />
+          <p>{errors.email?.message}</p>
         </div>
         <div>
           <label htmlFor="age">Age</label>
           <input type="number" id="age" {...register("age")} />
+          <p>{errors.age?.message}</p>
         </div>
         <div>
           <label htmlFor="password">Password</label>
@@ -65,6 +72,7 @@ export const Form = () => {
             id="ConfirmPassword"
             {...register("confirmpassword")}
           />
+          <p>{errors.confirmpassword?.message}</p>
         </div>
         <button className="submit-button" type="submit">
           Submit
